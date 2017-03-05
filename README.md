@@ -19,3 +19,11 @@ To start the server in watch mode, which will rebundle and restart on any change
 ```
 npm run watch
 ```
+
+Resources
+---------
+
+Annoyingly enough, https://socket.io/ has been down for weeks.
+
+- A mirror of the documentation: http://devdocs.io/socketio/using-multiple-nodes
+- A tutorial: https://openclassrooms.com/courses/ultra-fast-applications-using-node-js/socket-io-let-s-go-to-real-time
