@@ -1,7 +1,7 @@
 {
-  "name": "socket-demo",
+  "name": "chat-server",
   "version": "0.0.1",
-  "description": "A very simple setup for trying out full-stack Node.",
+  "description": "A very simple setup for trying out websockets with frontend and backend JavaScript.",
   "main": "index.js",
   "scripts": {
     "start": "webpack && node index.js",
