@@ -1,12 +1,26 @@
 // Entry point for webpacked client code.
-document.write('Hello world!')
 
 const $ = require('jquery');
 const io = require('socket.io-client');
 
+function addNews(msg) {
+  console.log(msg);
+  $('<li>').addClass('news').text(msg).appendTo('#messages');
+}
+
 var socket = io.connect('http://dev-reports-app04.london.mintel.ad:8080');
 socket.on('news', function (data) {
-  console.log(data);
+  addNews(data.message);
+});
+
+socket.on('message', function (data) {
+  console.log(data.message);
+  $('<li>').text(`${data.name}: ${data.message}`).appendTo('#messages');
+});
+
+socket.on('disconnect', function () {
+  addNews('The server has disconnected.');
+  $('form').off('submit');
 });
 
 socket.on('connect', function () {
