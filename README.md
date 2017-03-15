@@ -8,9 +8,10 @@ TODO
 
 - Write tests
   - Read up on websocket testing
-  - Maybe socket.io have a testing framework? If not, use sinon for unit tests.
-  - Might be fun to go straight into functional testing.
+  - Maybe socket.io has a testing framework? If not, we can just use sinon for unit tests.
+  - It might be fun to go straight into functional testing.
 
+- "User has disconnected" message
 - Set a session cookie to store the username
 - Keep the username when the server restarts
 - Limit to one person per username (except for anonymous - or set a uuid)
@@ -43,7 +44,7 @@ npm run watch
 Resources
 ---------
 
-- socket.io is finally back online. https://socket.io/
+- The socket.io site is finally back online. https://socket.io/
 - An archive.org link to the chat tutorial: https://web.archive.org/web/20161018172034/http://socket.io/get-started/chat/
 - A mirror of the documentation: http://devdocs.io/socketio/using-multiple-nodes
 - A tutorial: https://openclassrooms.com/courses/ultra-fast-applications-using-node-js/socket-io-let-s-go-to-real-time

@@ -8,7 +8,7 @@
     "url": "https://github.com/dprgarner/node-chat-server"
   },
   "scripts": {
-    "start": "webpack && node index.js",
+    "start": "webpack && node server.js",
     "watch": "nodemon -x \"npm start\" -i \"bundle.js\""
   },
   "author": "The Coding Club",
