@@ -3,12 +3,14 @@
 const $ = require('jquery');
 const io = require('socket.io-client');
 
+const settings = require('./settings')[process.env.NODE_ENV];
+
 function addNews(msg) {
   console.log(msg);
   $('<li>').addClass('news').text(msg).appendTo('#messages');
 }
 
-var socket = io.connect('http://dev-reports-app04.london.mintel.ad:8080');
+var socket = io.connect(`http://${settings.host}:${settings.port}`);
 socket.on('news', function (data) {
   addNews(data.message);
 });

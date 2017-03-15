@@ -6,7 +6,8 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-const PORT = 8080;
+const settings = require('./settings')[process.env.NODE_ENV];
+const PORT = settings.port;
 
 // Serve static files at the root path.
 app.use('/', express.static('static'));
