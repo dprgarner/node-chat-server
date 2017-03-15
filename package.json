@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "webpack && NODE_ENV=development node server.js",
-    "watch": "nodemon -x \"npm start\" -i \"bundle.js\""
+    "watch": "nodemon -x \"npm start\" -i \"bundle.js\"",
+    "test": "NODE_ENV=test mocha client.spec.js server.spec.js --require client-test-setup.js",
+    "watchtest": "npm test -- --watch"
   },
   "author": "The Coding Club",
   "license": "ISC",
@@ -20,6 +22,9 @@
     "webpack": "^2.2.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "jsdom": "^9.12.0",
+    "mocha": "^3.2.0",
     "nodemon": "^1.11.0"
   }
 }

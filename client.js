@@ -3,7 +3,7 @@
 const $ = require('jquery');
 const io = require('socket.io-client');
 
-const settings = require('./settings')[process.env.NODE_ENV];
+const settings = require('./settings');
 
 function addNews(msg) {
   console.log(msg);

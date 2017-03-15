@@ -1,4 +1,4 @@
-module.exports = {
+const roles = {
   test: {
     host: process.env.HOSTNAME,
     port: 9999,
@@ -9,3 +9,5 @@ module.exports = {
     port: 8080,
   },
 };
+
+module.exports = roles[process.env.NODE_ENV];
