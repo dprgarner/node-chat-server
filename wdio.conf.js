@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const dateformat = require('dateformat');
 
 exports.config = {
@@ -145,4 +147,8 @@ exports.config = {
     // possible to defer the end of the process using a promise.
     // onComplete: function(exitCode) {
     // }
-}
+};
+
+if (!fs.existsSync(exports.config.screenshotPath)) {
+    fs.mkdirSync(exports.config.screenshotPath);
+};

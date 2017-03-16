@@ -10,7 +10,7 @@
   "scripts": {
     "start": "webpack && NODE_ENV=development node server.js",
     "watch": "nodemon -x \"npm start\" -i \"bundle.js\"",
-    "test": "NODE_ENV=test mocha client.spec.js server.spec.js --require client-test-setup.js",
+    "test": "NODE_ENV=test mocha client.spec.js server.spec.js --require client-test-setup.js && NODE_ENV=test wdio",
     "watchtest": "npm test -- --watch"
   },
   "author": "The Coding Club",
