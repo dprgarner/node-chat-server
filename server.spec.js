@@ -28,11 +28,27 @@ describe('server-side', () => {
     const client = io.connect(serverUrl);
 
     client.on('news', (newsData) => {
-      if (newsData.message.indexOf('newName') !== -1) done();
+      const expectedMessage = 'Anonymous is now known as newName.';
+      if (newsData.message === expectedMessage) done();
     });
 
     client.once('connect', () => {
       client.emit('chat message', '/name newName')
+    });
+  });
+
+  it('allows a user to send a non-empty message', (done) => {
+    const client = io.connect(serverUrl);
+    const expectedMessage = 'Hello world!';
+
+    client.on('message', (newsData) => {
+      if (newsData.name === 'Anonymous' && newsData.message === expectedMessage) {
+        done();
+      }
+    });
+
+    client.once('connect', () => {
+      client.emit('chat message', expectedMessage);
     });
   });
 });
