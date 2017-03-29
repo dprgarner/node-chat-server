@@ -8,7 +8,7 @@
     "url": "https://github.com/dprgarner/node-chat-server"
   },
   "scripts": {
-    "start": "webpack && NODE_ENV=development node server.js",
+    "start": "webpack && NODE_ENV=development node start.js",
     "watch": "nodemon -x \"npm start\" -i \"bundle.js\"",
     "test:unit": "NODE_ENV=test istanbul cover  _mocha -- client.spec.js server.spec.js --require client-test-setup.js",
     "test:func": "webpack && NODE_ENV=test wdio",

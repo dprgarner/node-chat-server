@@ -6,7 +6,7 @@ const roles = {
 
   development: {
     host: process.env.HOSTNAME,
-    port: 8080,
+    port: 54321,
   },
 };
 

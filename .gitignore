@@ -1,3 +1,4 @@
+*.swp
 coverage
 errorShots/*
 node_modules

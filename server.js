@@ -15,9 +15,6 @@ io.on('connection', function (socket) {
   let name = 'Anonymous';
   socket.emit('news', { message: `Welcome, ${name}!` });
   socket.broadcast.emit('news', { message: `${name} has joined the chat.` });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
 
   socket.on('disconnect', function () {
     console.log('User disconnected');
@@ -35,6 +32,10 @@ io.on('connection', function (socket) {
 });
 
 // Start the app.
-server.listen(PORT, () => {
-  console.log('Listening on port ' + PORT)
-});
+function start() {
+    server.listen(PORT, () => {
+      console.log('Listening on port ' + PORT)
+    });
+}
+
+module.exports = { server, start };
