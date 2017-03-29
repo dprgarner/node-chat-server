@@ -51,4 +51,6 @@ describe('server-side', () => {
       client.emit('chat message', expectedMessage);
     });
   });
+
+  it('does not post an empty message');
 });

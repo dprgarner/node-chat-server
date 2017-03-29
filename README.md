@@ -6,10 +6,18 @@ Boilerplate app for setting up a websocket-based chat server with JavaScript. Cu
 TODO
 ----
 
-- Write tests
-  - Read up on websocket testing
-  - Maybe socket.io has a testing framework? If not, we can just use sinon for unit tests.
-  - It might be fun to go straight into functional testing.
+- Unit tests:
+  - Refactor the code to be more testable 
+    - Perhaps extract synchronous (functional) methods out into a Server
+      helper-class
+    - Idea for testing the no whitespace message branch: dispatch two
+      messages, one empty and one non-empty, and check that only the
+      non-empty one is called.
+  - Get 100% coverage, including else branches
+
+- Functional tests:
+  - Find a way to start and stop a full test server.
+  - Check that the wdio client connects, browses, and disconnects.
 
 - "User has disconnected" message
 - Set a session cookie to store the username
