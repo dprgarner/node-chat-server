@@ -12,23 +12,23 @@ function addNews(msg) {
 }
 
 var socket = io.connect(`http://${settings.host}:${settings.port}`);
-socket.on('news', function (data) {
+socket.on('news', (data) => {
   addNews(data.message);
 });
 
-socket.on(consts.EVENT_USER_RECV_CHAT, function (data) {
+socket.on(consts.EVENT_USER_RECV_CHAT, (data) => {
   console.log(data.message);
   $('<li>').text(`${data.name}: ${data.message}`).appendTo('#messages');
 });
 
-socket.on('disconnect', function () {
+socket.on('disconnect', () => {
   addNews('The server has disconnected.');
   $('form').off('submit');
 });
 
-socket.on('connect', function () {
+socket.on('connect', () => {
   console.log('Connected to server');
-  $('form').submit(function() {
+  $('form').submit(() => {
     socket.emit(consts.EVENT_USER_SEND_CHAT, $('#m').val());
     $('#m').val('');
     return false;

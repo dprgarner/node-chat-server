@@ -12,16 +12,16 @@ const PORT = require('./settings').port;
 // Serve static files at the root path.
 app.use('/', express.static('static'));
 
-io.on('connection', function (socket) {
+io.on('connection', (socket) => {
   let name = 'Anonymous';
   socket.emit('news', { message: `Welcome, ${name}!` });
   socket.broadcast.emit('news', { message: `${name} has joined the chat.` });
 
-  socket.on('disconnect', function () {
+  socket.on('disconnect', () => {
     console.log('User disconnected');
   });
 
-  socket.on(consts.EVENT_USER_SEND_CHAT, function(msg) {
+  socket.on(consts.EVENT_USER_SEND_CHAT, (msg) => {
     if (msg.indexOf('/name ') !== -1) {
       const newName = msg.replace('/name ', '');
       io.emit('news', { message: `${name} is now known as ${newName}.` });
@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
 
 // Start the app.
 exports.start = () => {
-    server.listen(PORT, () => {
-      console.log('Listening on port ' + PORT)
-    });
+  server.listen(PORT, () => {
+    console.log('Listening on port ' + PORT)
+  });
 };
