@@ -7,12 +7,14 @@ TODO
 ----
 
 - Unit tests:
-  - Refactor the code to be more testable 
+  - Refactor the code to be more testable
     - Perhaps extract synchronous (functional) methods out into a Server
       helper-class
     - Idea for testing the no whitespace message branch: dispatch two
       messages, one empty and one non-empty, and check that only the
       non-empty one is called.
+    - Alternatively, just setTimeout for a few ms and check that the
+      method was not called with Sinon
   - Get 100% coverage, including else branches
 
 - Functional tests:
