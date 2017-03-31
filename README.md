@@ -22,7 +22,6 @@ TODO
   - Check that the wdio client connects, browses, and disconnects.
 
 - "User has disconnected" message
-- Set a session cookie to store the username
 - Keep the username when the server restarts
 - Limit to one person per username (except for anonymous - or set a uuid)
 - Slight styling fixes
