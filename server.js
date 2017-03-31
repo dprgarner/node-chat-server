@@ -3,9 +3,10 @@ const express = require('express');
 
 // Set up an Express app.
 const app = express();
-const server = require('http').Server(app);
+const server = exports.server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+const consts = require('./consts');
 const PORT = require('./settings').port;
 
 // Serve static files at the root path.
@@ -20,22 +21,20 @@ io.on('connection', function (socket) {
     console.log('User disconnected');
   });
 
-  socket.on('chat message', function(msg) {
+  socket.on(consts.EVENT_USER_SEND_CHAT, function(msg) {
     if (msg.indexOf('/name ') !== -1) {
       const newName = msg.replace('/name ', '');
       io.emit('news', { message: `${name} is now known as ${newName}.` });
       name = newName;
     } else if (msg.trim()) {
-      io.emit('message', { name, message: msg });
+      io.emit(consts.EVENT_USER_RECV_CHAT, { name, message: msg });
     }
   });
 });
 
 // Start the app.
-function start() {
+exports.start = () => {
     server.listen(PORT, () => {
       console.log('Listening on port ' + PORT)
     });
-}
-
-module.exports = { server, start };
+};

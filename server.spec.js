@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const io = require('socket.io-client');
 
+const consts = require('./consts');
 const settings = require('./settings');
 const serverUrl = `http://${settings.host}:${settings.port}`;
 
@@ -33,7 +34,7 @@ describe('server-side', () => {
     });
 
     client.once('connect', () => {
-      client.emit('chat message', '/name newName')
+      client.emit(consts.EVENT_USER_SEND_CHAT, '/name newName')
     });
   });
 
@@ -41,14 +42,14 @@ describe('server-side', () => {
     const client = io.connect(serverUrl);
     const expectedMessage = 'Hello world!';
 
-    client.on('message', (newsData) => {
+    client.on(consts.EVENT_USER_RECV_CHAT, (newsData) => {
       if (newsData.name === 'Anonymous' && newsData.message === expectedMessage) {
         done();
       }
     });
 
     client.once('connect', () => {
-      client.emit('chat message', expectedMessage);
+      client.emit(consts.EVENT_USER_SEND_CHAT, expectedMessage);
     });
   });
 
