@@ -4,11 +4,9 @@ const io = require('socket.io-client');
 const consts = require('./consts');
 const settings = require('./settings');
 const serverUrl = `http://${settings.host}:${settings.port}`;
+const { server, start } = require('./server');
 
 describe('server-side', () => {
-  const io = require('socket.io-client');
-
-  const { server, start } = require('./server.js');
 
   beforeEach(() => {
     start();
