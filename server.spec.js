@@ -1,10 +1,11 @@
 const expect = require('chai').expect;
 const io = require('socket.io-client');
+const sinon = require('sinon');
 
 const consts = require('./consts');
 const settings = require('./settings');
 const serverUrl = `http://${settings.host}:${settings.port}`;
-const { server, start } = require('./server');
+const { server, start, io: serverIo, handleMessage, initialiseSession } = require('./server');
 
 describe('server-side', () => {
 
@@ -51,5 +52,29 @@ describe('server-side', () => {
     });
   });
 
-  it('does not post an empty message');
+  it('does not post an empty message', () => {
+    const stub = sinon.stub(serverIo, 'emit');
+    handleMessage(null, '    ');
+    expect(serverIo.emit.callCount).to.equal(0);
+    stub.restore();
+  });
+
+  it('sets the username to a default value', () => {
+    const fakeSession = {
+      save: sinon.spy(),
+    };
+    initialiseSession(fakeSession);
+    expect(fakeSession.name).to.equal('Anonymous');
+    expect(fakeSession.save.callCount).to.equal(1);
+  });
+
+  it('does not save the session if a username is present', () => {
+    const fakeSession = {
+      name: 'Roxy',
+      save: sinon.spy(),
+    };
+    initialiseSession(fakeSession);
+    expect(fakeSession.name).to.equal('Roxy');
+    expect(fakeSession.save.callCount).to.equal(0);
+  });
 });
