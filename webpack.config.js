@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './client.js',
+  entry: './client-start.js',
 
   output: {
     filename: './static/bundle.js',
