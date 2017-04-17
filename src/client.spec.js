@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const io = require('socket.io');
 
 const client = require('./client.js')
-const settings = require('./settings');
+const settings = require('../settings');
 
 describe('client-side', () => {
   beforeEach(() => {

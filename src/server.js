@@ -9,7 +9,7 @@ const sessionMiddleware = require('express-session')({
 });
 const sharedsession = require('express-socket.io-session');
 const consts = require('./consts');
-const PORT = require('./settings').port;
+const PORT = require('../settings').port;
 
 app.use(sessionMiddleware);
 

@@ -3,12 +3,11 @@ const io = require('socket.io-client');
 const sinon = require('sinon');
 
 const consts = require('./consts');
-const settings = require('./settings');
+const settings = require('../settings');
 const serverUrl = `http://${settings.host}:${settings.port}`;
 const { server, start, io: serverIo, handleMessage, initialiseSession } = require('./server');
 
 describe('server-side', () => {
-
   beforeEach(() => {
     start();
   });

@@ -2,8 +2,8 @@
 const $ = require('jquery');
 const io = require('socket.io-client');
 
-const settings = require('./settings');
-const consts = require('./consts');
+import settings from '../settings';
+import consts from './consts';
 
 function addNews(msg) {
   $('<li>').addClass('news').text(msg).appendTo('#messages');

@@ -5,7 +5,7 @@ const dateformat = require('dateformat');
 exports.config = {
     // Specify Test Files
     specs: [
-        './e2e/*.js'
+        './test/functional/*.js'
     ],
 
     // Patterns to exclude.
@@ -30,7 +30,7 @@ exports.config = {
     coloredLogs: true,
 
     // Saves a screenshot to a given path if a command fails.
-    screenshotPath: './errorShots/',
+    screenshotPath: './test/screenshots/',
 
     host: process.env.HOSTNAME || '127.0.0.1',
 

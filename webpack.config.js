@@ -1,10 +1,22 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './client-start.js',
+  entry: './src/client-start.js',
 
   output: {
     filename: './static/bundle.js',
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: /src\//,
+        use: {
+          loader: 'babel-loader',
+        }
+      }
+    ]
   },
 
   plugins: [
