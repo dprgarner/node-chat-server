@@ -5,4 +5,4 @@ test/coverage
 test/screenshots
 node_modules
 npm-debug.log
-static/bundle.js
+static/bundle.js*

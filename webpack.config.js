@@ -1,11 +1,9 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/client-start.js',
+  devtool: 'source-map',
 
-  output: {
-    filename: './static/bundle.js',
-  },
+  entry: './src/client-start.js',
 
   module: {
     rules: [
@@ -17,6 +15,10 @@ module.exports = {
         }
       }
     ]
+  },
+
+  output: {
+    filename: './static/bundle.js',
   },
 
   plugins: [
