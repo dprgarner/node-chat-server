@@ -6,8 +6,9 @@ Boilerplate app for setting up a websocket-based chat server with JavaScript. Cu
 TODO
 ----
 
+- Finish Client-side code class refactor
+
 - Unit tests:
-  - Check that I didn't break anything. Oops.
   - Extract 'Anonymous' into a global variable
   - Refactor the server tests to be more unit-like
   - Finish the client-side tests
