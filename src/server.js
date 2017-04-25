@@ -21,7 +21,7 @@ io.use(sharedsession(sessionMiddleware));
 function handleMessage(session, msg) {
   if (msg.indexOf('/name ') !== -1) {
     const newName = msg.replace('/name ', '');
-    io.emit('news', {
+    io.emit(consts.EVENT_NEWS, {
       message: `${session.name} is now known as ${newName}.`,
     });
     session.name = newName;
@@ -45,10 +45,10 @@ io.on('connection', (socket) => {
   const session = socket.handshake.session;
   initialiseSession(session);
 
-  socket.emit('news', {
+  socket.emit(consts.EVENT_NEWS, {
     message: `Welcome, ${session.name}!`,
   });
-  socket.broadcast.emit('news', {
+  socket.broadcast.emit(consts.EVENT_NEWS, {
     message: `${session.name} has joined the chat.`,
   });
 
