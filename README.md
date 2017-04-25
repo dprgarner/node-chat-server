@@ -6,33 +6,31 @@ Boilerplate app for setting up a websocket-based chat server with JavaScript. Cu
 TODO
 ----
 
+- Finish Client-side code class refactor
+
 - Unit tests:
-  - Refactor the code to be more testable
-    - Perhaps extract synchronous (functional) methods out into a Server
-      helper-class
-    - Idea for testing the no whitespace message branch: dispatch two
-      messages, one empty and one non-empty, and check that only the
-      non-empty one is called.
-    - Alternatively, just setTimeout for a few ms and check that the
-      method was not called with Sinon
+  - Extract 'Anonymous' into a global variable
+  - Refactor the server tests to be more unit-like
+  - Finish the client-side tests
   - Get 100% coverage, including else branches
 
 - Functional tests:
   - Find a way to start and stop a full test server.
   - Check that the wdio client connects, browses, and disconnects.
 
-- "User has disconnected" message
-- Keep the username when the server restarts
-- Limit to one person per username (except for anonymous - or set a uuid)
-- Slight styling fixes
-  - Scroll down when messages take up the whole page
-  - Don't have the chat box overlay the page
-- "User is typing" message
-- Channels
-- Giphy
-- Error messaging if a message isn't delivered
-- Store messages?
-- Private messaging?
+- Features
+  - "User has disconnected" message
+  - Keep the username when the server restarts
+  - Limit to one person per username (except for anonymous - or set a uuid)
+  - Slight styling fixes
+    - Scroll down when messages take up the whole page
+    - Don't have the chat box overlay the page
+  - "User is typing" message
+  - Channels
+  - Giphy
+  - Error messaging if a message isn't delivered
+  - Store messages?
+  - Private messaging?
 
 Getting started
 ---------------

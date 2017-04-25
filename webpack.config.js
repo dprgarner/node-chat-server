@@ -1,7 +1,21 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './client.js',
+  devtool: 'source-map',
+
+  entry: './src/client-start.js',
+
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: /src\//,
+        use: {
+          loader: 'babel-loader',
+        }
+      }
+    ]
+  },
 
   output: {
     filename: './static/bundle.js',
