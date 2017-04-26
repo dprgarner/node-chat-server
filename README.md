@@ -6,31 +6,32 @@ Boilerplate app for setting up a websocket-based chat server with JavaScript. Cu
 TODO
 ----
 
-- Finish Client-side code class refactor
+- New Features to add in the next few sessions
+  - "User has disconnected" message
+  - "User is typing" message
+  - List users (first with a /list command, then with a side-bar on the page)
+  - Recall (delete) one of your messages
+  - Edit one of your messages
 
-- Unit tests:
+- New Features to add later on, if we get around to it
+  - Limit to one person per username (except for anonymous - or set a uuid)
+  - Keep the username when the server restarts
+  - Add Giphy
+  - Remove Giphy
+  - Only add Gifs that Rob hates
+  - Error messaging if a message isn't delivered
+  - Store messages?
+  - Channels?
+  - Private messaging?
+
+- Unit test and initial code refactoring (if we get around to it):
   - Extract 'Anonymous' into a global variable
   - Refactor the server tests to be more unit-like
-  - Finish the client-side tests
-  - Get 100% coverage, including else branches
+  - Make sure that the client-side tests cover all logic (e.g. scroll handling, message appending)
 
 - Functional tests:
   - Find a way to start and stop a full test server.
   - Check that the wdio client connects, browses, and disconnects.
-
-- Features
-  - "User has disconnected" message
-  - Keep the username when the server restarts
-  - Limit to one person per username (except for anonymous - or set a uuid)
-  - Slight styling fixes
-    - Scroll down when messages take up the whole page
-    - Don't have the chat box overlay the page
-  - "User is typing" message
-  - Channels
-  - Giphy
-  - Error messaging if a message isn't delivered
-  - Store messages?
-  - Private messaging?
 
 Getting started
 ---------------

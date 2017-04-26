@@ -54,11 +54,13 @@ describe('client-side', () => {
 
   it('should append messages to the end of the message list', done => {
     expect(client.$messagesUl.children()).to.have.length(0);
+    client.$messagesUl.append('<li/>');
+    expect(client.$messagesUl.children()).to.have.length(1);
 
     server.emit(consts.EVENT_USER_RECV_CHAT, {message: 'my message'});
 
     callbackSpy(client, 'scrollToBottom', () => {
-      expect(client.$messagesUl.children()).to.have.length(1);
+      expect(client.$messagesUl.children()).to.have.length(2);
       expect(client.$messagesUl.html()).to.contain('my message');
       done();
     });
