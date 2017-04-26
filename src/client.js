@@ -8,7 +8,6 @@ import settings from '../settings';
 const handlePrefix = 'handle_';
 
 export class Client {
-
   constructor() {
     this.socket = null;
 
@@ -26,7 +25,7 @@ export class Client {
   }
 
   render() {
-    this.el = $(`
+    this.$el = $(`
       <div>
         <ul class='messages'></ul>
         <form>
@@ -34,9 +33,9 @@ export class Client {
         </form>
       </div>
     `);
-    this.inputBox = this.el.find('.input-box');
-    this.messagesUl = this.el.find('.messages');
-    this.form = this.el.find('form');
+    this.$inputBox = this.$el.find('.input-box');
+    this.$messagesUl = this.$el.find('.messages');
+    this.$form = this.$el.find('form');
   }
 
   getHandleFuncs() {
@@ -52,12 +51,12 @@ export class Client {
   }
 
   [handlePrefix + 'connect'](data) {
-    this.form.submit(this.onSubmit);
+    this.$form.submit(this.onSubmit);
   }
 
   [handlePrefix + 'disconnect'](data) {
     this.addNews('The server has disconnected.');
-    this.form.off('submit');
+    this.$form.off('submit');
   }
 
   [handlePrefix + consts.EVENT_NEWS](data) {
@@ -66,21 +65,21 @@ export class Client {
   }
 
   [handlePrefix + consts.EVENT_USER_RECV_CHAT](data) {
-    $('<li>').text(`${data.name}: ${data.message}`).appendTo(this.messagesUl);
+    $('<li>').text(`${data.name}: ${data.message}`).appendTo(this.$messagesUl);
     this.scrollToBottom();
   }
 
   onSubmit() {
-    this.socket.emit(consts.EVENT_USER_SEND_CHAT, this.inputBox.val());
-    this.inputBox.val('');
+    this.socket.emit(consts.EVENT_USER_SEND_CHAT, this.$inputBox.val());
+    this.$inputBox.val('');
     return false;
   }
 
   scrollToBottom() {
-    this.messagesUl.scrollTop(this.messagesUl[0].scrollHeight);
+    this.$messagesUl.scrollTop(this.$messagesUl[0].scrollHeight);
   }
 
   addNews(msg) {
-    $('<li>').addClass('news').text(msg).appendTo(this.messagesUl);
+    $('<li>').addClass('news').text(msg).appendTo(this.$messagesUl);
   }
 }

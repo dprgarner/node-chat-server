@@ -41,10 +41,9 @@ describe('server-side', () => {
     const expectedMessage = 'Hello world!';
 
     client.on(consts.EVENT_USER_RECV_CHAT, (newsData) => {
-      /* istanbul ignore else */
-      if (newsData.name === 'Anonymous' && newsData.message === expectedMessage) {
-        done();
-      }
+      expect(newsData.name).to.equal('Anonymous');
+      expect(newsData.message).to.equal(expectedMessage);
+      done();
     });
 
     client.once('connect', () => {
