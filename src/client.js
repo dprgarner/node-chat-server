@@ -1,24 +1,36 @@
 // Entry point for webpacked client code.
-const $ = require('jquery');
-const io = require('socket.io-client');
-const _ = require('underscore');
-
-import settings from '../settings';
+import $ from 'jquery';
+import _ from 'underscore';
 import consts from './consts';
+import io from 'socket.io-client';
+import settings from '../settings';
 
-class Client {
+const handlePrefix = 'handle_';
+
+export class Client {
 
   constructor() {
+    this.socket = null;
+
+    // Bind all handle functions.
+    _.bindAll.apply(_, [this, ...this.getHandleFuncs()]);
+
+    _.bindAll(this, 'onSubmit');
+  }
+
+  start() {
     this.socket = io.connect(`http://${settings.host}:${settings.port}`);
-    _.bindAll(this, 'handleSubmit');
+    this.render();
+    this.registerSocketHandlers();
+    return this;
   }
 
   render() {
     this.el = $(`
       <div>
         <ul class='messages'></ul>
-        <form action="">
-          <input class='input-box' autocomplete="off" /><button>Send</button>
+        <form>
+          <input class='input-box' autocomplete='off'/>
         </form>
       </div>
     `);
@@ -27,54 +39,48 @@ class Client {
     this.form = this.el.find('form');
   }
 
-  registerHandlers() {
-    this.socket.on('connect', () => {
-      this.form.submit(this.handleSubmit);
-    });
+  getHandleFuncs() {
+    const funcs = Object.getOwnPropertyNames(Client.prototype);
+    return _.filter(funcs, x => x.indexOf(handlePrefix) === 0);
   }
 
-  handleSubmit() {
+  registerSocketHandlers() {
+    _.each(this.getHandleFuncs(), funcName => {
+      const eventName = funcName.substring(handlePrefix.length);
+      this.socket.on(eventName, this[funcName]);
+    })
+  }
+
+  [handlePrefix + 'connect'](data) {
+    this.form.submit(this.onSubmit);
+  }
+
+  [handlePrefix + 'disconnect'](data) {
+    this.addNews('The server has disconnected.');
+    this.form.off('submit');
+  }
+
+  [handlePrefix + consts.EVENT_NEWS](data) {
+    this.addNews(data.message);
+    this.scrollToBottom();
+  }
+
+  [handlePrefix + consts.EVENT_USER_RECV_CHAT](data) {
+    $('<li>').text(`${data.name}: ${data.message}`).appendTo(this.messagesUl);
+    this.scrollToBottom();
+  }
+
+  onSubmit() {
     this.socket.emit(consts.EVENT_USER_SEND_CHAT, this.inputBox.val());
     this.inputBox.val('');
     return false;
   }
+
+  scrollToBottom() {
+    this.messagesUl.scrollTop(this.messagesUl[0].scrollHeight);
+  }
+
+  addNews(msg) {
+    $('<li>').addClass('news').text(msg).appendTo(this.messagesUl);
+  }
 }
-
-function addNews(msg) {
-  $('<li>').addClass('news').text(msg).appendTo('#messages');
-}
-
-// #m: input box
-function handleConnect() {
-  $('form').submit(() => {
-    this.emit(consts.EVENT_USER_SEND_CHAT, $('#m').val());
-    $('#m').val('');
-    return false;
-  });
-}
-
-function handleDisconnect() {
-  addNews('The server has disconnected.');
-  $('form').off('submit');
-}
-
-function start() {
-  var socket = io.connect(`http://${settings.host}:${settings.port}`);
-  socket.on('news', (data) => {
-    addNews(data.message);
-  });
-
-  socket.on(consts.EVENT_USER_RECV_CHAT, (data) => {
-    console.log(data.message);
-    $('<li>').text(`${data.name}: ${data.message}`).appendTo('#messages');
-  });
-
-  socket.on('disconnect', handleDisconnect);
-
-  socket.on('connect', handleConnect);
-  return socket;
-}
-
-exports.addNews = addNews;
-exports.start = start;
-exports.handleConnect = handleConnect;

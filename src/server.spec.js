@@ -26,7 +26,7 @@ describe('server-side', () => {
   it('allows a user to change their name', (done) => {
     const client = io.connect(serverUrl);
 
-    client.on('news', (newsData) => {
+    client.on(consts.EVENT_NEWS, (newsData) => {
       const expectedMessage = 'Anonymous is now known as newName.';
       if (newsData.message === expectedMessage) done();
     });
@@ -41,6 +41,7 @@ describe('server-side', () => {
     const expectedMessage = 'Hello world!';
 
     client.on(consts.EVENT_USER_RECV_CHAT, (newsData) => {
+      /* istanbul ignore else */
       if (newsData.name === 'Anonymous' && newsData.message === expectedMessage) {
         done();
       }
