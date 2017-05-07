@@ -1,2 +1,4 @@
 /* istanbul ignore next */
-require('./server').start();
+import Server from './server';
+/* istanbul ignore next */
+new Server().start();

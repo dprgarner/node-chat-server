@@ -1,19 +1,22 @@
-const expect = require('chai').expect;
-const io = require('socket.io-client');
-const sinon = require('sinon');
+import io from 'socket.io-client';
+import sinon from 'sinon';
+import { expect } from 'chai';
 
-const consts = require('./consts');
-const settings = require('../settings');
-const serverUrl = `http://${settings.host}:${settings.port}`;
-const { server, start, io: serverIo, handleMessage, initialiseSession } = require('./server');
+import consts from './consts';
+import Server from './server';
+import { host, port } from '../settings';
+
+const serverUrl = `http://${host}:${port}`;
 
 describe('server-side', () => {
-  beforeEach(() => {
-    start();
+  const server = new Server();
+
+  beforeEach(done => {
+    server.start(done);
   });
 
-  afterEach(() => {
-    server.close();
+  afterEach(done => {
+    server.close(done);
   });
 
   it('allows a client to connect', (done) => {
@@ -52,9 +55,9 @@ describe('server-side', () => {
   });
 
   it('does not post an empty message', () => {
-    const stub = sinon.stub(serverIo, 'emit');
-    handleMessage(null, '    ');
-    expect(serverIo.emit.callCount).to.equal(0);
+    const stub = sinon.stub(server.io, 'emit');
+    server.handleMessage({ handshake: {} }, '    ');
+    expect(server.io.emit.callCount).to.equal(0);
     stub.restore();
   });
 
@@ -62,7 +65,7 @@ describe('server-side', () => {
     const fakeSession = {
       save: sinon.spy(),
     };
-    initialiseSession(fakeSession);
+    server.initialiseSession(fakeSession);
     expect(fakeSession.name).to.equal('Anonymous');
     expect(fakeSession.save.callCount).to.equal(1);
   });
@@ -72,7 +75,7 @@ describe('server-side', () => {
       name: 'Roxy',
       save: sinon.spy(),
     };
-    initialiseSession(fakeSession);
+    server.initialiseSession(fakeSession);
     expect(fakeSession.name).to.equal('Roxy');
     expect(fakeSession.save.callCount).to.equal(0);
   });

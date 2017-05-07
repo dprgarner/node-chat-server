@@ -43,7 +43,7 @@
   },
   "scripts": {
     "build": "babel src --out-dir build --ignore client*.js,spec.js && webpack",
-    "start": "npm run build -s && NODE_ENV=development node build/start.js",
+    "start": "npm run build -s && cross-env NODE_ENV=development node build/start.js",
     "watch": "nodemon -x \"npm start -s\" -w src",
     "test:unit": "cross-env NODE_ENV=test mocha --require babel-register --require test/client-setup.js src/client.spec.js src/server.spec.js",
     "test:functional": "cross-env NODE_ENV=functional npm run build -s && wdio",

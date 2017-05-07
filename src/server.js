@@ -1,74 +1,86 @@
-const express = require('express');
-const app = express();
-const server = exports.server = require('http').createServer(app);
-const io = require('socket.io')(server);
-const sessionMiddleware = require('express-session')({
-  secret: 'my-secret',
-  resave: true,
-  saveUninitialized: true
-});
-const sharedsession = require('express-socket.io-session');
-const consts = require('./consts');
-const PORT = require('../settings').port;
+import http from 'http';
 
-app.use(sessionMiddleware);
+import express from 'express';
+import expressSession from 'express-session';
+import sharedSession from 'express-socket.io-session';
+import socketIo from 'socket.io';
 
-// Serve static files at the root path.
-app.use('/', express.static('static'));
+import consts from './consts';
+import { port } from '../settings';
 
-io.use(sharedsession(sessionMiddleware));
-
-function handleMessage(session, msg) {
-  if (msg.indexOf('/name ') !== -1) {
-    const newName = msg.replace('/name ', '');
-    io.emit(consts.EVENT_NEWS, {
-      message: `${session.name} is now known as ${newName}.`,
+export default class Server {
+  constructor() {
+    const app = express();
+    const sessionMiddleware = expressSession({
+      secret: 'my-secret',
+      resave: true,
+      saveUninitialized: true
     });
-    session.name = newName;
-    session.save();
-  } else if (msg.trim()) {
-    io.emit(consts.EVENT_USER_RECV_CHAT, {
-      name: session.name,
-      message: msg,
+    app.use(sessionMiddleware);
+
+    // Serve static files at the root path.
+    app.use('/', express.static('static'));
+
+    this.server = http.createServer(app);
+    this.io = socketIo(this.server);
+    this.io.use(sharedSession(sessionMiddleware));
+
+    this.io.on('connect', (socket) => this.handleConnect(socket));
+  }
+
+  start(cb) {
+    this.server.listen(port, (err) => {
+      cb && cb(err);
     });
   }
-}
 
-function initialiseSession(session) {
-  if (!session.name) {
-    session.name = 'Anonymous';
-    session.save();
+  close(cb) {
+    this.server.close(cb);
   }
-}
 
-io.on('connection', (socket) => {
-  const session = socket.handshake.session;
-  initialiseSession(session);
+  initialiseSession(session) {
+    if (!session.name) {
+      session.name = 'Anonymous';
+      session.save();
+    }
+  }
 
-  socket.emit(consts.EVENT_NEWS, {
-    message: `Welcome, ${session.name}!`,
-  });
-  socket.broadcast.emit(consts.EVENT_NEWS, {
-    message: `${session.name} has joined the chat.`,
-  });
+  handleConnect(socket) {
+    const session = socket.handshake.session;
+    this.initialiseSession(session);
 
-  socket.on('disconnect', () => {
+    socket.emit(consts.EVENT_NEWS, {
+      message: `Welcome, ${session.name}!`,
+    });
+    socket.broadcast.emit(consts.EVENT_NEWS, {
+      message: `${session.name} has joined the chat.`,
+    });
+
+    // Socket-specific listeners
+    socket.on('disconnect', () => this.handleDisconnect(socket));
+    socket.on(consts.EVENT_USER_SEND_CHAT, message => (
+      this.handleMessage(socket, message)
+    ));
+  }
+
+  handleDisconnect(socket) {
     console.log('User disconnected');
-  });
+  }
 
-  socket.on(
-    consts.EVENT_USER_SEND_CHAT,
-    message => handleMessage(session, message)
-  );
-});
-
-// Start the app.
-exports.start = () => {
-  server.listen(PORT, () => {
-    console.log('Listening on port ' + PORT)
-  });
-};
-
-exports.handleMessage = handleMessage
-exports.initialiseSession = initialiseSession;
-exports.io = io;
+  handleMessage(socket, msg) {
+    const session = socket.handshake.session;
+    if (msg.indexOf('/name ') !== -1) {
+      const newName = msg.replace('/name ', '');
+      this.io.emit(consts.EVENT_NEWS, {
+        message: `${session.name} is now known as ${newName}.`,
+      });
+      session.name = newName;
+      session.save();
+    } else if (msg.trim()) {
+      this.io.emit(consts.EVENT_USER_RECV_CHAT, {
+        name: session.name,
+        message: msg,
+      });
+    }
+  }
+}
