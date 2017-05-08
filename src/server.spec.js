@@ -81,23 +81,25 @@ describe('server-side', () => {
   });
 
   it('emits a disconnect message when a user disconnects', (done) => {
+    const calls = [];
+
+    function checkCalls() {
+      expect(calls).to.include('Anonymous has left the chat room.');
+      done();
+    }
+
     const client1 = io.connect(serverUrl);
-
-    let shouldCheck = false;
-
     client1.on(consts.EVENT_NEWS, (newsData) => {
-      if (!shouldCheck) return;
-      const expectedMessage = 'Anonymous has left the chat room.';
-      if (newsData.message === expectedMessage) {
-        client1.close(done);
-      }
+      calls.push(newsData.message);
     });
 
     client1.once('connect', () => {
       const client2 = io.connect(serverUrl);
       client2.once('connect', () => {
-        shouldCheck = true;
         client2.close();
+      });
+      client2.once('disconnect', () => {
+        setTimeout(checkCalls, 50);
       });
     });
   });

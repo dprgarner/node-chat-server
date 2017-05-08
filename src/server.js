@@ -35,7 +35,7 @@ export default class Server {
   }
 
   close(cb) {
-    this.server.close(cb);
+    this.io.close(cb);
   }
 
   initialiseSession(session) {
