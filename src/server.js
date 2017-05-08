@@ -52,6 +52,7 @@ export default class Server {
     socket.emit(consts.EVENT_NEWS, {
       message: `Welcome, ${session.name}!`,
     });
+
     socket.broadcast.emit(consts.EVENT_NEWS, {
       message: `${session.name} has joined the chat.`,
     });
@@ -64,7 +65,9 @@ export default class Server {
   }
 
   handleDisconnect(socket) {
-    console.log('User disconnected');
+    socket.broadcast.emit(consts.EVENT_NEWS, {
+      message: `Anonymous has left the chat room.`,
+    });
   }
 
   handleMessage(socket, msg) {

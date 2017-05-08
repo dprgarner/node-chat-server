@@ -9,9 +9,9 @@ TODO
 - New Features to add in the next few sessions
   - "User has disconnected" message
   - "User is typing" message
-  - List users (first with a /list command, then with a side-bar on the page)
   - Recall (delete) one of your messages
   - Edit one of your messages
+  - List users (first with a /list command, then with a side-bar on the page)
 
 - New Features to add later on, if we get around to it
   - Limit to one person per username (except for anonymous - or set a uuid)

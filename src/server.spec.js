@@ -79,4 +79,26 @@ describe('server-side', () => {
     expect(fakeSession.name).to.equal('Roxy');
     expect(fakeSession.save.callCount).to.equal(0);
   });
+
+  it('emits a disconnect message when a user disconnects', (done) => {
+    const client1 = io.connect(serverUrl);
+
+    let shouldCheck = false;
+
+    client1.on(consts.EVENT_NEWS, (newsData) => {
+      if (!shouldCheck) return;
+      const expectedMessage = 'Anonymous has left the chat room.';
+      if (newsData.message === expectedMessage) {
+        client1.close(done);
+      }
+    });
+
+    client1.once('connect', () => {
+      const client2 = io.connect(serverUrl);
+      client2.once('connect', () => {
+        shouldCheck = true;
+        client2.close();
+      });
+    });
+  });
 });
