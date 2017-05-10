@@ -65,8 +65,9 @@ export default class Server {
   }
 
   handleDisconnect(socket) {
+    const session = socket.handshake.session;
     socket.broadcast.emit(consts.EVENT_NEWS, {
-      message: `Anonymous has left the chat room.`,
+      message: `${session.name} has left the chat room.`,
     });
   }
 
@@ -74,16 +75,20 @@ export default class Server {
     const session = socket.handshake.session;
     if (msg.indexOf('/name ') !== -1) {
       const newName = msg.replace('/name ', '');
-      this.io.emit(consts.EVENT_NEWS, {
-        message: `${session.name} is now known as ${newName}.`,
-      });
-      session.name = newName;
-      session.save();
+      this.renameUser(session, newName);
     } else if (msg.trim()) {
       this.io.emit(consts.EVENT_USER_RECV_CHAT, {
         name: session.name,
         message: msg,
       });
     }
+  }
+
+  renameUser(session, newName) {
+    this.io.emit(consts.EVENT_NEWS, {
+      message: `${session.name} is now known as ${newName}.`,
+    });
+    session.name = newName;
+    session.save();
   }
 }

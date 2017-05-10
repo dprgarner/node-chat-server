@@ -7,8 +7,11 @@ TODO
 ----
 
 - New Features to add in the next few sessions
-  - "User has disconnected" message
   - "User is typing" message
+    - Client-side rendering
+    - Server-side dispatching
+    - Server-side event processing
+    - Client-side event pushing
   - Recall (delete) one of your messages
   - Edit one of your messages
   - List users (first with a /list command, then with a side-bar on the page)

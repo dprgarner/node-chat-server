@@ -103,4 +103,18 @@ describe('server-side', () => {
       });
     });
   });
+
+  describe('handleDisconnect', () => {
+    it("includes a user's name on disconnect", () => {
+      const socket = {
+        broadcast: { emit: sinon.stub() },
+        handshake: { session: { name: 'David' } },
+      };
+      server.handleDisconnect(socket);
+      expect(socket.broadcast.emit.calledWith(
+        consts.EVENT_NEWS,
+        { message: 'David has left the chat room.' },
+      )).to.be.true;
+    });
+  });
 });
