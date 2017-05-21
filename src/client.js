@@ -29,6 +29,7 @@ export class Client {
       <div>
         <ul class='messages'></ul>
         <form>
+          <div class='users-typing'></div>
           <input class='input-box' autocomplete='off'/>
         </form>
       </div>
@@ -36,6 +37,7 @@ export class Client {
     this.$inputBox = this.$el.find('.input-box');
     this.$messagesUl = this.$el.find('.messages');
     this.$form = this.$el.find('form');
+    this.$usersTypingBox = this.$el.find('.users-typing');
   }
 
   getHandleFuncs() {
@@ -47,7 +49,7 @@ export class Client {
     _.each(this.getHandleFuncs(), funcName => {
       const eventName = funcName.substring(handlePrefix.length);
       this.socket.on(eventName, this[funcName]);
-    })
+    });
   }
 
   [handlePrefix + 'connect'](data) {
@@ -67,6 +69,10 @@ export class Client {
   [handlePrefix + consts.EVENT_USER_RECV_CHAT](data) {
     $('<li>').text(`${data.name}: ${data.message}`).appendTo(this.$messagesUl);
     this.scrollToBottom();
+  }
+
+  [handlePrefix + 'USERS_TYPING'](data) {
+    this.$usersTypingBox.text(data);
   }
 
   onSubmit() {
